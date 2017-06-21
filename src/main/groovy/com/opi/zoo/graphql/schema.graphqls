@@ -1,0 +1,39 @@
+schema {
+    query: QueryType
+}
+
+type QueryType {
+    animal(id: String): Animal
+    keeper(id : String) : Keeper
+}
+
+type Keeper {
+    id: ID!
+    name: String!
+    animals: [Animal]
+}
+
+type Animal {
+    id: ID!
+    name: String!
+    type: AnimalType
+    birthdate: String!
+}
+
+enum AnimalType {
+    BEAR
+    BIRD
+    ELEPHANT
+    FISH
+    GIRAFFE
+    INSECT
+    KOALA
+    LION
+    LIZARD
+    OTTER
+    RAT
+    SNAKE
+    TIGER
+    TURTLE
+    ZEBRA
+}
