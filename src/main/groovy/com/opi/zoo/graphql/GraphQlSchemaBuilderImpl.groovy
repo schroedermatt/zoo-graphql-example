@@ -1,5 +1,6 @@
 package com.opi.zoo.graphql
 
+import com.opi.zoo.rest.domain.Keeper
 import com.opi.zoo.rest.repository.AnimalRepository
 import com.opi.zoo.rest.repository.KeeperRepository
 import graphql.schema.GraphQLList
@@ -10,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import static graphql.Scalars.GraphQLLong
+import static graphql.Scalars.GraphQLString
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
-import static graphql.Scalars.GraphQLString
 
 @Component
 @Slf4j
@@ -67,7 +68,7 @@ class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
                     .name("animals")
                     .description("Animals that the keeper cares for.")
                     .type(new GraphQLList(animalType))
-                    .dataFetcher({ env -> env.getSource()})
+                    .dataFetcher({ it.<Keeper>getSource().animals })
                     .build())
 
                 .build()
