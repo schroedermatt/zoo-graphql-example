@@ -34,7 +34,6 @@ class GraphQlExecutorImpl implements GraphQlExecutor {
                 10,
                 TimeUnit.SECONDS,
                 queue,
-
                 new CustomizableThreadFactory("graphql-thread-"),
                 new ThreadPoolExecutor.CallerRunsPolicy()))
 
@@ -79,6 +78,7 @@ class GraphQlExecutorImpl implements GraphQlExecutor {
         return Collections.emptyMap()
     }
 
+    // FIXME
     private Map<String, Object> getVariablesMapFromString(String variablesFromRequest) {
         try {
             return jacksonObjectMapper.readValue(variablesFromRequest, typeRefReadJsonString)

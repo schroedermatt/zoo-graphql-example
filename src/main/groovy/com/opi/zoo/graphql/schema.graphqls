@@ -3,8 +3,8 @@ schema {
 }
 
 type QueryType {
-    animal(id: String): Animal
-    keeper(id : String) : Keeper
+    animals(id: String): [Animal]
+    keepers(id : String) : [Keeper]
 }
 
 type Keeper {
@@ -16,7 +16,7 @@ type Keeper {
 type Animal {
     id: ID!
     name: String!
-    type: AnimalType
+    type: AnimalType!
     birthdate: String!
 }
 

@@ -3,10 +3,10 @@ package com.opi.zoo.graphql
 import com.opi.zoo.rest.domain.Keeper
 import com.opi.zoo.rest.repository.AnimalRepository
 import com.opi.zoo.rest.repository.KeeperRepository
+import graphql.Scalars
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
-import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -16,7 +16,6 @@ import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
 
 @Component
-@Slf4j
 class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
     @Autowired
     AnimalRepository animalRepository
@@ -27,51 +26,57 @@ class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
     GraphQLSchema buildSchema() {
 
         GraphQLObjectType animalType = newObject()
-                .name("animal")
-                .description("A Zoo Animal")
-                .field(newFieldDefinition()
-                    .name("id")
-                    .description("Animal ID")
-                    .type(GraphQLLong)
-                    .build())
+            .name("animal")
+            .description("A Zoo Animal")
+            .field(newFieldDefinition()
+                .name("id")
+                .description("Animal ID")
+                .type(GraphQLLong)
+                .build())
 
-                .field(newFieldDefinition()
-                    .name("name")
-                    .description("Animal Name")
-                    .type(GraphQLString)
-                    .build())
+            .field(newFieldDefinition()
+                .name("name")
+                .description("Animal Name")
+                .type(GraphQLString)
+                .build())
 
-                .field(newFieldDefinition()
-                    .name("type")
-                    .description("Type of Animal")
-                    .type(GraphQLString)
-                    .build())
+            .field(newFieldDefinition()
+                .name("type")
+                .description("Type of Animal")
+                .type(GraphQLString)
+                .build())
 
-                .build()
+            .build()
 
         GraphQLObjectType keeperType = newObject()
-                .name("keeper")
-                .description("A Zoo Keeper")
-                .field(newFieldDefinition()
-                    .name("id")
-                    .description("Keeper ID")
-                    .type(GraphQLLong)
-                    .build())
+            .name("keeper")
+            .description("A Zoo Keeper")
+            .field(newFieldDefinition()
+                .name("id")
+                .description("Keeper ID")
+                .type(GraphQLLong)
+                .build())
 
-                .field(newFieldDefinition()
-                    .name("name")
-                    .description("Keeper Name")
-                    .type(GraphQLString)
-                    .build())
+            .field(newFieldDefinition()
+                .name("name")
+                .description("Keeper Name")
+                .type(GraphQLString)
+                .build())
 
-                .field(newFieldDefinition()
-                    .name("animals")
-                    .description("Animals that the keeper cares for.")
-                    .type(new GraphQLList(animalType))
-                    .dataFetcher({ it.<Keeper>getSource().animals })
-                    .build())
+            .field(newFieldDefinition()
+                .name("animalcount")
+                .description("Number of animals cared for.")
+                .type(Scalars.GraphQLInt)
+                .dataFetcher({ it.<Keeper>getSource().animals?.size() })
+                .build())
 
-                .build()
+            .field(newFieldDefinition()
+                .name("animals")
+                .description("Animals that the keeper cares for.")
+                .type(new GraphQLList(animalType))
+                .build())
+
+            .build()
 
         GraphQLObjectType queryType = newObject()
             .name("query")
@@ -90,9 +95,9 @@ class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
             .build()
 
         GraphQLSchema
-                .newSchema()
-                .query(queryType)
-                .build()
+            .newSchema()
+            .query(queryType)
+            .build()
     }
 
 
