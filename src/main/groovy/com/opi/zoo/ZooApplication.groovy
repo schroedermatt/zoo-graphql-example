@@ -41,19 +41,18 @@ class ZooApplication implements CommandLineRunner {
 				new Keeper(id: currId++, name: Fairy.create().person().fullName(), animals: [])
 		])
 
-		// assign animals to each keeper
-		keepers.each {
-			int animalCount = random.nextInt(15)
-			for (int i = 0; i < animalCount; i++) {
+		// assign random number of animals to each keeper
+		keepers.each { keeper ->
+			(0..random.nextInt(15)).each {
 				Fairy fairy = Fairy.create()
-				it.animals << animalRepository.save(new Animal(
+				keeper.animals << animalRepository.save(new Animal(
 					id: currId++,
 					name: fairy.person().firstName(),
 					type: AnimalType.randomType(),
 					birthdate: fairy.dateProducer().randomDateBetweenYearAndNow(1900).toDate().toInstant()
 				))
 			}
-			keeperRepository.save(it)
+			keeperRepository.save(keeper)
 		}
 	}
 }

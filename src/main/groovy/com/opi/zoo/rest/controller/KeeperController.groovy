@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/keepers")
 class KeeperController {
+    // note: service layer left out for simplicity
     @Autowired
     KeeperRepository keeperRepository
 
@@ -25,7 +26,7 @@ class KeeperController {
         ResponseEntity.ok(keeperRepository.findOne(id))
     }
 
-// create may not be needed for example
+// create not be needed for example
 //    @PostMapping
 //    ResponseEntity createKeeper(@RequestBody Keeper keeper) {
 //        URI location = ServletUriComponentsBuilder

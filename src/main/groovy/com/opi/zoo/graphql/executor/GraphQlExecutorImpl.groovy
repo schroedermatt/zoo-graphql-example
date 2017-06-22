@@ -14,6 +14,8 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
+import static GraphQL.newGraphQL
+
 @Component
 class GraphQlExecutorImpl implements GraphQlExecutor {
     @Autowired
@@ -21,6 +23,10 @@ class GraphQlExecutorImpl implements GraphQlExecutor {
 
     private GraphQL graphQL
 
+    /**
+     * Setup Execution Strategy
+     * https://goo.gl/ewG2hL
+     */
     @PostConstruct
     private void postConstruct() {
         def queue = new LinkedBlockingQueue<Runnable>() {
@@ -39,7 +45,9 @@ class GraphQlExecutorImpl implements GraphQlExecutor {
                 new CustomizableThreadFactory("graphql-thread-"),
                 new ThreadPoolExecutor.CallerRunsPolicy()))
 
-        graphQL = new GraphQL(schemaService.getSchema(), strategy)
+        graphQL = newGraphQL(schemaService.getSchema())
+                .queryExecutionStrategy(strategy)
+                .build()
     }
 
     Object executeRequest(Map body) {

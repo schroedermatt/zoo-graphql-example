@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/animals")
 class AnimalController {
+    // note: service layer left out for simplicity
     @Autowired
     AnimalRepository animalRepository
 
@@ -25,7 +26,7 @@ class AnimalController {
         ResponseEntity.ok(animalRepository.findOne(id))
     }
 
-    // create may not be needed for example
+// create not be needed for example
 //    @PostMapping
 //    ResponseEntity createAnimal(@RequestBody Animal animal) {
 //        Animal created = animalRepository.save(animal)
