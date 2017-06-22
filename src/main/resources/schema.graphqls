@@ -8,32 +8,14 @@ type QueryType {
 }
 
 type Keeper {
-    id: ID!
+    id: Long!
     name: String!
     animals: [Animal]
 }
 
 type Animal {
-    id: ID!
+    id: Long!
     name: String!
-    type: AnimalType!
+    type: String!
     birthdate: String!
-}
-
-enum AnimalType {
-    BEAR
-    BIRD
-    ELEPHANT
-    FISH
-    GIRAFFE
-    INSECT
-    KOALA
-    LION
-    LIZARD
-    OTTER
-    RAT
-    SNAKE
-    TIGER
-    TURTLE
-    ZEBRA
 }

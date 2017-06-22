@@ -1,4 +1,4 @@
-package com.opi.zoo.rest.controllers
+package com.opi.zoo.rest.controller
 
 import com.opi.zoo.rest.domain.Animal
 import com.opi.zoo.rest.repository.AnimalRepository

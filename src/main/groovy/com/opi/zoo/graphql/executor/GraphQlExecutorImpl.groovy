@@ -1,5 +1,6 @@
-package com.opi.zoo.graphql
+package com.opi.zoo.graphql.executor
 
+import com.opi.zoo.graphql.schema.GraphQLSchemaService
 import graphql.GraphQL
 import graphql.GraphQLException
 import graphql.execution.ExecutorServiceExecutionStrategy
@@ -16,7 +17,8 @@ import java.util.concurrent.TimeUnit
 @Component
 class GraphQlExecutorImpl implements GraphQlExecutor {
     @Autowired
-    GraphQLSchemaBuilder schemaBuilder
+    GraphQLSchemaService schemaService
+
     private GraphQL graphQL
 
     @PostConstruct
@@ -37,7 +39,7 @@ class GraphQlExecutorImpl implements GraphQlExecutor {
                 new CustomizableThreadFactory("graphql-thread-"),
                 new ThreadPoolExecutor.CallerRunsPolicy()))
 
-        graphQL = new GraphQL(schemaBuilder.buildSchema(), strategy)
+        graphQL = new GraphQL(schemaService.getSchema(), strategy)
     }
 
     Object executeRequest(Map body) {

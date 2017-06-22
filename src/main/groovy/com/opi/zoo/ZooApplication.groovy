@@ -1,8 +1,8 @@
 package com.opi.zoo
 
 import com.opi.zoo.rest.domain.Animal
-import com.opi.zoo.rest.domain.Keeper
 import com.opi.zoo.rest.domain.AnimalType
+import com.opi.zoo.rest.domain.Keeper
 import com.opi.zoo.rest.repository.AnimalRepository
 import com.opi.zoo.rest.repository.KeeperRepository
 import org.jfairy.Fairy

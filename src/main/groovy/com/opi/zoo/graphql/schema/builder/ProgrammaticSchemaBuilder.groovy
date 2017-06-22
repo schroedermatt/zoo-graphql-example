@@ -1,8 +1,8 @@
-package com.opi.zoo.graphql
+package com.opi.zoo.graphql.schema.builder
 
+import com.opi.zoo.graphql.datafetcher.AnimalDataFetcher
+import com.opi.zoo.graphql.datafetcher.KeeperDataFetcher
 import com.opi.zoo.rest.domain.Keeper
-import com.opi.zoo.rest.repository.AnimalRepository
-import com.opi.zoo.rest.repository.KeeperRepository
 import graphql.Scalars
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
@@ -10,21 +10,23 @@ import graphql.schema.GraphQLSchema
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import javax.annotation.PostConstruct
+
 import static graphql.Scalars.GraphQLLong
 import static graphql.Scalars.GraphQLString
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition
 import static graphql.schema.GraphQLObjectType.newObject
 
 @Component
-class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
+class ProgrammaticSchemaBuilder extends AbstractSchemaBuilder {
     @Autowired
-    AnimalRepository animalRepository
+    AnimalDataFetcher animalDataFetcher
 
     @Autowired
-    KeeperRepository keeperRepository
+    KeeperDataFetcher keeperDataFetcher
 
-    GraphQLSchema buildSchema() {
-
+    @PostConstruct
+    void buildSchema() {
         GraphQLObjectType animalType = newObject()
             .name("animal")
             .description("A Zoo Animal")
@@ -63,6 +65,7 @@ class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
                 .type(GraphQLString)
                 .build())
 
+            // simple example of a generated value not on the original data model
             .field(newFieldDefinition()
                 .name("animalcount")
                 .description("Number of animals cared for.")
@@ -85,19 +88,22 @@ class GraphQlSchemaBuilderImpl implements GraphQLSchemaBuilder {
                 .name("keepers")
                 .description("Overview of all Zoo Keepers")
                 .type(new GraphQLList(keeperType))
-                .dataFetcher({ env -> keeperRepository.findAll() })
+                .dataFetcher({ env -> keeperDataFetcher.findAll() })
                 .build())
+
             .field(newFieldDefinition()
                 .name("animals")
+                .description("Overview of all animals")
                 .type(new GraphQLList(animalType))
-                .dataFetcher({ env -> animalRepository.findAll() })
+                .dataFetcher({ env -> animalDataFetcher.findAll() })
                 .build())
+
             .build()
 
-        GraphQLSchema
-            .newSchema()
-            .query(queryType)
-            .build()
+        this.schema = GraphQLSchema
+                .newSchema()
+                .query(queryType)
+                .build()
     }
 
 
