@@ -19,8 +19,10 @@ class KeeperDataFetcher {
     List<Keeper> filterAll(DataFetchingEnvironment env) {
         Long id = env.getArgument('id')
 
+        // explicit null check since 0 is falsy
         if (id != null) {
-            return [keeperRepository.findOne(id)]
+            def keeper = keeperRepository.findOne(id)
+            return keeper ? [keeper] : []
         }
 
         return keeperRepository.findAll()

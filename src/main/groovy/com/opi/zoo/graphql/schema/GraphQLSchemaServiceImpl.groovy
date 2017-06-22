@@ -19,6 +19,6 @@ class GraphQLSchemaServiceImpl implements GraphQLSchemaService {
     ProgrammaticSchemaBuilder programmaticSchema
 
     GraphQLSchema getSchema() {
-        useIDL ? idlSchema.schema : programmaticSchema.schema
+        useIDL ? idlSchema.getSchema() : programmaticSchema.getSchema()
     }
 }

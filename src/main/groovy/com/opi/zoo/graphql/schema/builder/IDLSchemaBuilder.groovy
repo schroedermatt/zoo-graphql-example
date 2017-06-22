@@ -2,6 +2,7 @@ package com.opi.zoo.graphql.schema.builder
 
 import com.opi.zoo.graphql.datafetcher.AnimalDataFetcher
 import com.opi.zoo.graphql.datafetcher.KeeperDataFetcher
+import com.opi.zoo.graphql.schema.helper.ResourceReader
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
@@ -22,9 +23,12 @@ class IDLSchemaBuilder extends AbstractSchemaBuilder {
     @Autowired
     KeeperDataFetcher keeperDataFetcher
 
+    @Autowired
+    ResourceReader resourceReader
+
     @PostConstruct
     void buildSchema() {
-        String schemaFile = this.class.getResourceAsStream("/schema.graphqls").text
+        String schemaFile = resourceReader.getResourceAsString("/schema.graphqls")
 
         TypeDefinitionRegistry typeRegistry = new TypeDefinitionRegistry()
         typeRegistry.merge(new SchemaParser().parse(schemaFile))
@@ -39,7 +43,7 @@ class IDLSchemaBuilder extends AbstractSchemaBuilder {
     private RuntimeWiring buildRuntimeWiring() {
         def typeWiring = newTypeWiring("QueryType")
             .dataFetcher("keepers", { env -> keeperDataFetcher.filterAll(env) })
-            .dataFetcher("animals", { animalDataFetcher.findAll() })
+            .dataFetcher("animals", { env -> animalDataFetcher.filterAll(env) })
             .build()
 
         return newRuntimeWiring().type(typeWiring).build()
