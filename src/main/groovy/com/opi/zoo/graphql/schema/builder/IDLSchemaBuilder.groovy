@@ -38,7 +38,7 @@ class IDLSchemaBuilder extends AbstractSchemaBuilder {
      */
     private RuntimeWiring buildRuntimeWiring() {
         def typeWiring = newTypeWiring("QueryType")
-            .dataFetcher("keepers", { keeperDataFetcher.findAll() })
+            .dataFetcher("keepers", { env -> keeperDataFetcher.filterAll(env) })
             .dataFetcher("animals", { animalDataFetcher.findAll() })
             .build()
 
