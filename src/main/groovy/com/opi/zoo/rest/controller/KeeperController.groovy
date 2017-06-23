@@ -26,7 +26,7 @@ class KeeperController {
         ResponseEntity.ok(keeperRepository.findOne(id))
     }
 
-// create not be needed for example
+// create not needed for example
 //    @PostMapping
 //    ResponseEntity createKeeper(@RequestBody Keeper keeper) {
 //        URI location = ServletUriComponentsBuilder

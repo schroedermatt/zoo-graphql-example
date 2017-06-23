@@ -26,7 +26,7 @@ class AnimalController {
         ResponseEntity.ok(animalRepository.findOne(id))
     }
 
-// create not be needed for example
+// create not needed for example
 //    @PostMapping
 //    ResponseEntity createAnimal(@RequestBody Animal animal) {
 //        Animal created = animalRepository.save(animal)
